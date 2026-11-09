@@ -1,0 +1,32 @@
+# Python virtual environments
+venv/
+venv312/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Large datasets - keep them local
+data/raw/*
+data/processed/retail_cleaned.csv
+
+# Excel export
+powerbi/ecommerce_rfm_powerbi.xlsx
+
+# Power BI temporary/backup files
+*.pbit
+*.tmp
+*.bak
+
+# VS Code settings
+.vscode/
+
+# Python environment files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
