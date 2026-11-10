@@ -91,3 +91,117 @@ SELECT
     SUM(Revenue <> Quantity * Price) AS incorrect_revenue_rows
 FROM retail_transactions;
 SHOW ENGINES;
+-- ============================================================
+-- CUSTOMER & BUSINESS ANALYSIS
+-- ============================================================
+-- 1. Revenue by Customer Segment
+use ecommerce_rfm;
+SELECT
+    Segment,
+    COUNT(*) AS Customer_Count,
+    ROUND(SUM(Monetary), 2) AS Total_Revenue,
+    ROUND(AVG(Monetary), 2) AS Average_Customer_Revenue
+FROM customer_rfm
+GROUP BY Segment
+ORDER BY Total_Revenue DESC;
+
+-- 2. Customer Count by Segment
+
+SELECT
+    Segment,
+    COUNT(*) AS Customer_Count,
+    ROUND(
+        COUNT(*) * 100.0 / (SELECT COUNT(*) FROM customer_rfm),
+        2
+    ) AS Customer_Percentage
+FROM customer_rfm
+GROUP BY Segment
+ORDER BY Customer_Count DESC;
+
+-- 3. Top 10 Customers by Monetary Value
+
+SELECT
+    `Customer ID`,
+    Recency,
+    Frequency,
+    ROUND(Monetary, 2) AS Monetary,
+    RFM_Score,
+    Segment
+FROM customer_rfm
+ORDER BY Monetary DESC
+LIMIT 10;
+
+-- 4. Top 10 Customers by Purchase Frequency
+
+SELECT
+    `Customer ID`,
+    Recency,
+    Frequency,
+    ROUND(Monetary, 2) AS Monetary,
+    RFM_Score,
+    Segment
+FROM customer_rfm
+ORDER BY Frequency DESC
+LIMIT 10;
+
+-- 5. Customers with the Most Recent Purchases
+
+SELECT
+    `Customer ID`,
+    Recency,
+    Frequency,
+    ROUND(Monetary, 2) AS Monetary,
+    RFM_Score,
+    Segment
+FROM customer_rfm
+ORDER BY Recency ASC
+LIMIT 10;
+
+-- 6. At-Risk Customers
+
+SELECT
+    `Customer ID`,
+    Recency,
+    Frequency,
+    ROUND(Monetary, 2) AS Monetary,
+    RFM_Score,
+    Segment
+FROM customer_rfm
+WHERE Segment = 'At Risk'
+ORDER BY Monetary DESC
+LIMIT 20;
+
+-- 7. Champion Customers
+
+SELECT
+    `Customer ID`,
+    Recency,
+    Frequency,
+    ROUND(Monetary, 2) AS Monetary,
+    RFM_Score
+FROM customer_rfm
+WHERE Segment = 'Champions'
+ORDER BY Monetary DESC
+LIMIT 20;
+
+-- 8. Average RFM Metrics by Segment
+
+SELECT
+    Segment,
+    COUNT(*) AS Customer_Count,
+    ROUND(AVG(Recency), 2) AS Avg_Recency,
+    ROUND(AVG(Frequency), 2) AS Avg_Frequency,
+    ROUND(AVG(Monetary), 2) AS Avg_Monetary
+FROM customer_rfm
+GROUP BY Segment
+ORDER BY Avg_Monetary DESC;
+
+
+
+
+
+
+
+
+
+
